@@ -1,7 +1,7 @@
 // src/domain/usecases/CheckDoubleBookingUseCase.ts
 
-import { Reservation } from '../entities/Reservation';
-import { ReservationRepository } from '../repositories/ReservationRepository';
+import type { Reservation } from '../entities/Reservation';
+import type { ReservationRepository } from '../repositories/ReservationRepository';
 
 export class CheckDoubleBookingUseCase {
   constructor(private repository: ReservationRepository) {}
@@ -25,7 +25,6 @@ export class CheckDoubleBookingUseCase {
       }
 
       // 3. Logic: Check for overlapping times
-      // We convert "HH:mm" strings into total minutes past midnight for reliable mathematics
       const existingStart = this.timeToMinutes(existing.startTime);
       const existingEnd = this.timeToMinutes(existing.endTime);
       const newStart = this.timeToMinutes(newReservation.startTime);
