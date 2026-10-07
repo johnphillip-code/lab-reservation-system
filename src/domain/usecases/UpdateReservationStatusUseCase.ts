@@ -1,10 +1,14 @@
 // src/domain/usecases/UpdateReservationStatusUseCase.ts
 
-import { ReservationRepository } from '../repositories/ReservationRepository';
-import { ReservationStatus } from '../entities/Reservation';
+import type { ReservationRepository } from '../repositories/ReservationRepository';
+import type { ReservationStatus } from '../entities/Reservation';
 
 export class UpdateReservationStatusUseCase {
-  constructor(private repository: ReservationRepository) {}
+  private readonly repository: ReservationRepository;
+
+  constructor(repository: ReservationRepository) {
+    this.repository = repository;
+  }
 
   /**
    * Updates the status of a reservation while enforcing domain business rules.

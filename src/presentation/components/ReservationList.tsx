@@ -1,7 +1,7 @@
 // src/presentation/components/ReservationList.tsx
 
 import React, { useState } from 'react';
-import { Reservation, ReservationStatus, LabType } from '../../domain/entities/Reservation';
+import type { Reservation, ReservationStatus, LabType } from '../../domain/entities/Reservation';
 
 interface ReservationListProps {
   reservations: Reservation[];

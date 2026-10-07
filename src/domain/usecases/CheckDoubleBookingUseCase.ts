@@ -4,7 +4,11 @@ import type { Reservation } from '../entities/Reservation';
 import type { ReservationRepository } from '../repositories/ReservationRepository';
 
 export class CheckDoubleBookingUseCase {
-  constructor(private repository: ReservationRepository) {}
+  private readonly repository: ReservationRepository;
+
+  constructor(repository: ReservationRepository) {
+    this.repository = repository;
+  }
 
   /**
    * Checks if a proposed reservation overlaps with any existing Pending or Approved reservations.

@@ -1,6 +1,6 @@
 // src/App.tsx
 
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { LocalStorageReservationRepository } from './data/repositories/LocalStorageReservationRepository';
 import type { Reservation, ReservationStatus } from './domain/entities/Reservation';
 import { Dashboard } from './presentation/components/Dashboard';
@@ -13,15 +13,11 @@ const repository = new LocalStorageReservationRepository();
 const updateStatusUseCase = new UpdateReservationStatusUseCase(repository);
 
 export default function App() {
-  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [reservations, setReservations] = useState<Reservation[]>(() => repository.getAll());
 
   const loadData = () => {
     setReservations(repository.getAll());
   };
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const handleStatusChange = (id: string, newStatus: ReservationStatus, reason?: string) => {
     const result = updateStatusUseCase.execute(id, newStatus, reason);
