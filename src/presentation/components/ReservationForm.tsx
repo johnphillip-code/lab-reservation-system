@@ -1,8 +1,8 @@
 // src/presentation/components/ReservationForm.tsx
 
 import React, { useState } from 'react';
-import { LabType, isCapacityValid, Reservation } from '../../domain/entities/Reservation';
-import { ReservationRepository } from '../../domain/repositories/ReservationRepository';
+import { isCapacityValid, type LabType, type Reservation } from '../../domain/entities/Reservation';
+import type { ReservationRepository } from '../../domain/repositories/ReservationRepository';
 import { CheckDoubleBookingUseCase } from '../../domain/usecases/CheckDoubleBookingUseCase';
 
 interface ReservationFormProps {
@@ -27,22 +27,18 @@ export const ReservationForm: React.FC<ReservationFormProps> = ({ repository, on
     setError(null);
     setSuccessMsg(null);
 
-    // 1. Basic UI Validation
     if (startTime >= endTime) {
       setError("End time must be after start time.");
       return;
     }
 
-    // 2. Domain Validation: Capacity
     if (!isCapacityValid(lab, studentsCount)) {
       setError(`Capacity exceeded. ${lab} can only hold up to 40/30/25 students respectively.`);
       return;
     }
 
-    // 3. Domain Logic: Double Booking Check (Your Feature!)
     const doubleBookingCheck = new CheckDoubleBookingUseCase(repository);
     
-    // We pass the payload without ID or Status, exactly as your Use Case expects
     const conflictError = doubleBookingCheck.execute({
       teacherName,
       lab,
@@ -55,12 +51,11 @@ export const ReservationForm: React.FC<ReservationFormProps> = ({ repository, on
 
     if (conflictError) {
       setError(conflictError);
-      return; // Stop execution if there is a overlap
+      return;
     }
 
-    // 4. Create and Save the Entity
     const newReservation: Reservation = {
-      id: Date.now().toString(), // Simple unique ID for frontend-only
+      id: Date.now().toString(),
       teacherName,
       lab,
       date,
@@ -68,13 +63,12 @@ export const ReservationForm: React.FC<ReservationFormProps> = ({ repository, on
       endTime,
       purpose,
       studentsCount,
-      status: 'Pending' // All new reservations start as Pending
+      status: 'Pending'
     };
 
     repository.save(newReservation);
     setSuccessMsg(`Reservation for ${lab} on ${date} submitted successfully!`);
     
-    // Reset form
     setTeacherName('');
     setDate('');
     setStartTime('');
@@ -82,7 +76,6 @@ export const ReservationForm: React.FC<ReservationFormProps> = ({ repository, on
     setPurpose('');
     setStudentsCount(0);
     
-    // Trigger parent refresh
     onSuccess();
   };
 

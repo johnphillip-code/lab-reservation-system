@@ -1,7 +1,7 @@
 // src/data/repositories/LocalStorageReservationRepository.ts
 
-import { Reservation } from '../../domain/entities/Reservation';
-import { ReservationRepository } from '../../domain/repositories/ReservationRepository';
+import type { Reservation } from '../../domain/entities/Reservation';
+import type { ReservationRepository } from '../../domain/repositories/ReservationRepository';
 
 const STORAGE_KEY = 'it415_lab_reservations_db';
 

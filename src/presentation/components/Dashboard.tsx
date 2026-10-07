@@ -1,7 +1,7 @@
 // src/presentation/components/Dashboard.tsx
 
 import React from 'react';
-import { Reservation } from '../../domain/entities/Reservation';
+import type { Reservation } from '../../domain/entities/Reservation';
 
 interface DashboardProps {
   reservations: Reservation[];

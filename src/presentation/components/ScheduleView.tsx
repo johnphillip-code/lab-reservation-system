@@ -1,7 +1,7 @@
 // src/presentation/components/ScheduleView.tsx
 
 import React, { useState } from 'react';
-import { Reservation, LabType } from '../../domain/entities/Reservation';
+import type { Reservation, LabType } from '../../domain/entities/Reservation';
 
 interface ScheduleViewProps {
   reservations: Reservation[];
@@ -9,14 +9,12 @@ interface ScheduleViewProps {
 
 export const ScheduleView: React.FC<ScheduleViewProps> = ({ reservations }) => {
   const [selectedLab, setSelectedLab] = useState<LabType>('ComLab 1');
-  
-  // Default to today's date formatted as YYYY-MM-DD
   const today = new Date().toISOString().split('T')[0];
   const [selectedDate, setSelectedDate] = useState<string>(today);
 
   const filteredReservations = reservations
     .filter(r => r.lab === selectedLab && r.date === selectedDate)
-    .sort((a, b) => a.startTime.localeCompare(b.startTime)); // Sort chronologically
+    .sort((a, b) => a.startTime.localeCompare(b.startTime));
 
   return (
     <div style={{ padding: '20px', borderBottom: '1px solid #ccc' }}>

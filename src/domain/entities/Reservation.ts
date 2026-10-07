@@ -8,13 +8,13 @@ export interface Reservation {
   id: string;
   teacherName: string;
   lab: LabType;
-  date: string;       // Format: YYYY-MM-DD
-  startTime: string;  // Format: HH:mm (24-hour)
-  endTime: string;    // Format: HH:mm (24-hour)
+  date: string;       
+  startTime: string;  
+  endTime: string;    
   purpose: string;
   studentsCount: number;
   status: ReservationStatus;
-  rejectionReason?: string; // Only populated if status is Rejected
+  rejectionReason?: string; 
 }
 
 export const LAB_CAPACITIES: Record<LabType, number> = {
@@ -23,9 +23,6 @@ export const LAB_CAPACITIES: Record<LabType, number> = {
   'AES': 25
 };
 
-/**
- * Business Rule: Validates if the requested student count fits in the selected lab.
- */
 export function isCapacityValid(lab: LabType, studentsCount: number): boolean {
   return studentsCount > 0 && studentsCount <= LAB_CAPACITIES[lab];
 }

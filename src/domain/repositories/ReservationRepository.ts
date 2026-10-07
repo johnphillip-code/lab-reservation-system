@@ -1,6 +1,6 @@
 // src/domain/repositories/ReservationRepository.ts
 
-import { Reservation } from '../entities/Reservation';
+import type { Reservation } from '../entities/Reservation';
 
 export interface ReservationRepository {
   getAll(): Reservation[];

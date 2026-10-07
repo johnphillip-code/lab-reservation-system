@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { LocalStorageReservationRepository } from './data/repositories/LocalStorageReservationRepository';
-import { Reservation, ReservationStatus } from './domain/entities/Reservation';
+import type { Reservation, ReservationStatus } from './domain/entities/Reservation';
 import { Dashboard } from './presentation/components/Dashboard';
 import { ScheduleView } from './presentation/components/ScheduleView';
 import { ReservationForm } from './presentation/components/ReservationForm';
@@ -24,13 +24,12 @@ export default function App() {
   }, []);
 
   const handleStatusChange = (id: string, newStatus: ReservationStatus, reason?: string) => {
-    // UI delegates business logic to the Domain layer
     const result = updateStatusUseCase.execute(id, newStatus, reason);
     
     if (!result.success) {
       alert(result.error);
     } else {
-      loadData(); // Refresh UI on success
+      loadData();
     }
   };
 
