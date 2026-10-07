@@ -7,8 +7,10 @@ import { Dashboard } from './presentation/components/Dashboard';
 import { ScheduleView } from './presentation/components/ScheduleView';
 import { ReservationForm } from './presentation/components/ReservationForm';
 import { ReservationList } from './presentation/components/ReservationList';
+import { UpdateReservationStatusUseCase } from './domain/usecases/UpdateReservationStatusUseCase';
 
 const repository = new LocalStorageReservationRepository();
+const updateStatusUseCase = new UpdateReservationStatusUseCase(repository);
 
 export default function App() {
   const [reservations, setReservations] = useState<Reservation[]>([]);
@@ -22,20 +24,13 @@ export default function App() {
   }, []);
 
   const handleStatusChange = (id: string, newStatus: ReservationStatus, reason?: string) => {
-    const reservation = repository.getById(id);
-    if (reservation) {
-      // Apply strict status rules (Rule 6)
-      if (reservation.status === 'Rejected' || reservation.status === 'Cancelled') {
-        alert("A Rejected or Cancelled reservation cannot be changed again.");
-        return;
-      }
-      
-      reservation.status = newStatus;
-      if (reason) {
-        reservation.rejectionReason = reason;
-      }
-      repository.update(reservation);
-      loadData(); // Refresh UI
+    // UI delegates business logic to the Domain layer
+    const result = updateStatusUseCase.execute(id, newStatus, reason);
+    
+    if (!result.success) {
+      alert(result.error);
+    } else {
+      loadData(); // Refresh UI on success
     }
   };
 
